@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>India Sports &amp; Recreation Facilities — Directory</title>
+<meta name="description" content="Searchable directory of sports and recreation facilities across India — football turfs, cricket grounds, swimming pools, boxing, archery, horse riding, kayaking and more." />
+<style>
+  :root{
+    --bg:#f6f7f9; --panel:#fff; --ink:#12161c; --muted:#5b6572; --line:#e3e7ec;
+    --accent:#0b5fff; --accent-ink:#fff; --chip:#eef3ff; --chip-ink:#0b4ad6;
+    --gov:#0a7d4b; --pvt:#8a5a00; --radius:14px;
+    --shadow:0 1px 2px rgba(16,24,40,.05), 0 6px 20px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  header.hero{background:linear-gradient(135deg,#0b1f4d 0%,#0b5fff 100%);color:#fff;padding:34px 22px 26px}
+  .wrap{max-width:1180px;margin:0 auto}
+  .hero h1{margin:0 0 6px;font-size:26px;letter-spacing:-.02em}
+  .hero p{margin:0;color:#cfe0ff;font-size:14px;max-width:760px}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:8px 12px;min-width:104px}
+  .stat b{display:block;font-size:19px;line-height:1.2}
+  .stat span{font-size:11px;color:#cfe0ff;text-transform:uppercase;letter-spacing:.06em}
+  main{max-width:1180px;margin:0 auto;padding:20px 22px 60px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .filters{padding:14px 16px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr auto;gap:10px;align-items:end}
+  .field{display:flex;flex-direction:column;gap:5px;min-width:0}
+  .field label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+  input[type=search],select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;color:var(--ink);outline:none}
+  input[type=search]:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(11,95,255,.14)}
+  .check{display:flex;align-items:center;gap:7px;padding-bottom:9px;font-size:13px;color:var(--muted);white-space:nowrap}
+  button{font:inherit;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 14px;border-radius:9px;cursor:pointer}
+  button:disabled{opacity:.5;cursor:default}
+  .bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:18px 2px 10px;flex-wrap:wrap}
+  .bar .count{color:var(--muted);font-size:13px}
+  .bar .count b{color:var(--ink)}
+  .pager{display:flex;gap:8px;align-items:center}
+  .pager span{font-size:13px;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+  .card{padding:15px 16px;display:flex;flex-direction:column;gap:9px}
+  .card h3{margin:0;font-size:15.5px;line-height:1.35;letter-spacing:-.01em}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:11.5px;padding:3px 8px;border-radius:999px;background:var(--chip);color:var(--chip-ink);font-weight:600;white-space:nowrap}
+  .tag.own-gov{background:#e6f5ee;color:var(--gov)}
+  .tag.own-pvt{background:#fdf1dc;color:var(--pvt)}
+  .loc{font-size:13px;color:var(--muted);margin:0}
+  .rows{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13px;margin-top:2px}
+  .rows dt{color:var(--muted)}
+  .rows dd{margin:0;word-break:break-word}
+  a.tel{color:var(--accent);text-decoration:none;font-weight:600}
+  a.tel:hover{text-decoration:underline}
+  .empty{padding:40px 16px;text-align:center;color:var(--muted)}
+  .skel{height:150px;border-radius:var(--radius);background:linear-gradient(90deg,#eef1f4,#f7f9fb,#eef1f4);background-size:200% 100%;animation:sh 1.2s infinite}
+  @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  footer{max-width:1180px;margin:0 auto;padding:0 22px 40px;color:var(--muted);font-size:12.5px;line-height:1.6}
+  footer code{background:#eef1f4;padding:1px 5px;border-radius:5px}
+  @media (max-width:900px){ .filters{grid-template-columns:1fr 1fr} }
+  @media (max-width:560px){ .filters{grid-template-columns:1fr} .hero h1{font-size:21px} }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <h1>India Sports &amp; Recreation Facilities</h1>
+    <p>A searchable directory of bookable sports and recreation facilities across all 36 states and union territories — football turfs, cricket grounds, swimming pools, boxing academies, archery ranges, horse-riding centres and kayaking spots.</p>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<main>
+  <section class="panel filters">
+    <div class="field"><label for="q">Search</label>
+      <input id="q" type="search" placeholder="Name, city, area…" autocomplete="off" /></div>
+    <div class="field"><label for="activity">Activity</label>
+      <select id="activity"><option value="">All activities</option></select></div>
+    <div class="field"><label for="state">State / UT</label>
+      <select id="state"><option value="">All states &amp; UTs</option></select></div>
+    <div class="field"><label for="district">District</label>
+      <select id="district"><option value="">All districts</option></select></div>
+    <div class="field"><label for="ownership">Ownership</label>
+      <select id="ownership"><option value="">Any</option><option value="Private">Private</option><option value="Government">Government</option></select></div>
+    <div class="field"><label>&nbsp;</label>
+      <label class="check"><input id="bookable" type="checkbox" /> Bookable only</label></div>
+  </section>
+
+  <div class="bar">
+    <div class="count" id="count">Loading…</div>
+    <div class="pager">
+      <button id="prev" disabled>Prev</button>
+      <span id="pageinfo">—</span>
+      <button id="next" disabled>Next</button>
+      <select id="perpage" style="width:auto">
+        <option value="24">24 / page</option>
+        <option value="48" selected>48 / page</option>
+        <option value="96">96 / page</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <p><strong>About this data.</strong> Compiled from publicly listed sources — operator websites, booking platforms and official sports bodies. Not an official government dataset. Fields such as <code>village</code>, <code>panchayat</code>, <code>usage_fee</code> and <code>pool_depth</code> are incomplete where operators don't publish them, and read "Not stated" rather than being guessed. Verify contact details before relying on them.</p>
+  <p>API (when deployed with Netlify Functions): <code>/api/facilities?activity=Swimming%20Pool&amp;state=Kerala&amp;bookable=true&amp;limit=50</code> &nbsp;·&nbsp; <code>/api/meta</code></p>
+</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const S = { limit: 48, offset: 0, mode: 'api', static: null, meta: null };
+let debounce;
+
+async function getJSON(url){
+  const r = await fetch(url);
+  if(!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+function chip(n, label){ return '<div class="stat"><b>' + n + '</b><span>' + label + '</span></div>'; }
+function esc(v){
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderMeta(meta){
+  const s = meta.stats;
+  $('stats').innerHTML =
+    chip(Number(s.total).toLocaleString('en-IN'), 'Facilities') +
+    chip(Object.keys(s.by_activity).length, 'Activity types') +
+    chip(s.states_covered, 'States & UTs') +
+    chip(s.districts_covered + ' / ' + s.districts_total, 'Districts covered') +
+    chip(Number(s.private).toLocaleString('en-IN'), 'Private') +
+    chip(Number(s.government).toLocaleString('en-IN'), 'Government') +
+    chip(Number(s.with_contact).toLocaleString('en-IN'), 'With contact');
+  const act = $('activity'), st = $('state');
+  act.length = 1; st.length = 1;
+  meta.activities.forEach(a => act.add(new Option(a, a)));
+  meta.states.forEach(a => st.add(new Option(a, a)));
+  S.meta = meta;
+}
+
+async function bootstrap(){
+  try{
+    const meta = await getJSON('api/meta');
+    S.mode = 'api';
+    renderMeta(meta);
+  }catch(e){
+    try{
+      const data = await getJSON('data/facilities.json');
+      S.static = data.facilities;
+      S.mode = 'static';
+      renderMeta({ stats: data.stats, activities: data.activities, states: data.states, districts: data.districts });
+    }catch(e2){
+      $('count').textContent = 'Could not load data: ' + e2.message;
+      return;
+    }
+  }
+  fillDistricts();
+  load();
+}
+
+function fillDistricts(){
+  const st = $('state').value;
+  const sel = $('district');
+  sel.innerHTML = '<option value="">All districts</option>';
+  if(!S.meta) return;
+  const set = new Set(S.meta.districts.filter(d => !st || d.state === st).map(d => d.district));
+  [...set].sort().forEach(d => sel.add(new Option(d, d)));
+}
+
+function queryObj(){
+  const p = {};
+  const q = $('q').value.trim(); if(q) p.q = q;
+  const a = $('activity').value; if(a) p.activity = a;
+  const s = $('state').value; if(s) p.state = s;
+  const d = $('district').value; if(d) p.district = d;
+  const o = $('ownership').value; if(o) p.ownership = o;
+  if($('bookable').checked) p.bookable = 'true';
+  p.limit = String(S.limit);
+  p.offset = String(S.offset);
+  return p;
+}
+
+function filterLocal(rows, p){
+  const norm = (s) => (s || '').toLowerCase();
+  let out = rows;
+  if(p.activity) out = out.filter(r => r.activity === p.activity);
+  if(p.state) out = out.filter(r => r.state === p.state);
+  if(p.district) out = out.filter(r => r.district === p.district);
+  if(p.ownership){
+    const o = p.ownership.toLowerCase();
+    out = o === 'government'
+      ? out.filter(r => norm(r.ownership).startsWith('government'))
+      : out.filter(r => norm(r.ownership) === o);
+  }
+  if(p.bookable === 'true') out = out.filter(r => r.contact_number && !['Not stated','Not published'].includes(r.contact_number));
+  if(p.q){
+    const q = p.q.toLowerCase();
+    out = out.filter(r => [r.facility_name, r.city, r.district, r.location_area, r.state].some(f => norm(f).includes(q)));
+  }
+  const total = out.length;
+  const offset = parseInt(p.offset, 10) || 0;
+  const limit = parseInt(p.limit, 10) || 48;
+  return { total, offset, count: out.slice(offset, offset + limit).length, results: out.slice(offset, offset + limit) };
+}
+
+async function fetchData(p){
+  if(S.mode === 'api'){
+    const qs = new URLSearchParams(p).toString();
+    return getJSON('api/facilities?' + qs);
+  }
+  return filterLocal(S.static, p);
+}
+
+function card(f){
+  const ownClass = /government/i.test(f.ownership) ? 'own-gov' : 'own-pvt';
+  const loc = [f.location_area, f.city].filter(Boolean).join(', ');
+  const tel = (f.contact_number && !['Not stated','Not published'].includes(f.contact_number))
+    ? '<a class="tel" href="tel:' + esc(f.contact_number).replace(/[^+0-9]/g,'') + '">' + esc(f.contact_number) + '</a>'
+    : '<span style="color:var(--muted)">Not published</span>';
+  const rows = [];
+  rows.push(['District', esc(f.district || 'Not stated') + (f.state ? ', ' + esc(f.state) : '')]);
+  if(f.pool_type && f.pool_type !== 'Not stated') rows.push(['Pool type', esc(f.pool_type)]);
+  if(f.pool_depth && f.pool_depth !== 'Not stated') rows.push(['Depth', esc(f.pool_depth)]);
+  rows.push(['Fee', esc(f.usage_fee && f.usage_fee !== 'Not published' ? f.usage_fee : 'Not published')]);
+  if(f.payment_options && f.payment_options !== 'Not stated') rows.push(['Booking', esc(f.payment_options)]);
+  rows.push(['Contact', tel]);
+  return '<article class="panel card">' +
+    '<h3>' + esc(f.facility_name) + '</h3>' +
+    '<div class="tags">' +
+      '<span class="tag">' + esc(f.activity) + '</span>' +
+      '<span class="tag ' + ownClass + '">' + esc(f.ownership) + '</span>' +
+      (f.pincode && f.pincode !== 'Not stated' ? '<span class="tag">' + esc(f.pincode) + '</span>' : '') +
+    '</div>' +
+    (loc ? '<p class="loc">' + esc(loc) + '</p>' : '') +
+    '<dl class="rows">' + rows.map(r => '<dt>' + r[0] + '</dt><dd>' + r[1] + '</dd>').join('') + '</dl>' +
+  '</article>';
+}
+
+async function load(){
+  const grid = $('grid');
+  grid.innerHTML = Array.from({length:6}, () => '<div class="skel"></div>').join('');
+  try{
+    const data = await fetchData(queryObj());
+    if(!data.results.length){
+      grid.innerHTML = '<div class="panel empty" style="grid-column:1/-1">No facilities match those filters.</div>';
+    }else{
+      grid.innerHTML = data.results.map(card).join('');
+    }
+    const from = data.total ? data.offset + 1 : 0;
+    const to = data.offset + data.count;
+    $('count').innerHTML = 'Showing <b>' + from.toLocaleString('en-IN') + '–' + to.toLocaleString('en-IN') + '</b> of <b>' + data.total.toLocaleString('en-IN') + '</b> facilities';
+    const pages = Math.max(1, Math.ceil(data.total / S.limit));
+    const page = Math.floor(data.offset / S.limit) + 1;
+    $('pageinfo').textContent = 'Page ' + page + ' of ' + pages;
+    $('prev').disabled = S.offset <= 0;
+    $('next').disabled = to >= data.total;
+  }catch(e){
+    grid.innerHTML = '<div class="panel empty" style="grid-column:1/-1">Could not load facilities: ' + esc(e.message) + '</div>';
+    $('count').textContent = 'Error';
+  }
+}
+
+function reset(){ S.offset = 0; load(); }
+$('q').addEventListener('input', () => { clearTimeout(debounce); debounce = setTimeout(reset, 300); });
+['activity','ownership','bookable','perpage'].forEach(id => $(id).addEventListener('change', () => {
+  if(id === 'perpage') S.limit = parseInt($('perpage').value, 10);
+  reset();
+}));
+$('state').addEventListener('change', () => { fillDistricts(); reset(); });
+$('district').addEventListener('change', reset);
+$('prev').addEventListener('click', () => { S.offset = Math.max(0, S.offset - S.limit); load(); });
+$('next').addEventListener('click', () => { S.offset += S.limit; load(); });
+
+bootstrap();
+</script>
+</body>
+</html>
